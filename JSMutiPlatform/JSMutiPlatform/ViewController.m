@@ -7,8 +7,12 @@
 //
 
 #import "ViewController.h"
+#import "WebViewProxy.h"
 
-@interface ViewController ()
+@interface ViewController () <UIWebViewDelegate>
+
+@property (weak, nonatomic) IBOutlet UIWebView *webView;
+@property (strong, nonnull) WebViewProxy* proxy;
 
 @end
 
@@ -16,12 +20,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    _webView.delegate = self;
+    _proxy = [[WebViewProxy alloc] initWith:_webView];
+    
+    NSString* path = [[NSBundle mainBundle] pathForResource:@"ExampleApp" ofType:@"html"];
+    NSURL* url = [NSURL fileURLWithPath:path];
+    NSURLRequest* req = [NSURLRequest requestWithURL:url];
+    [_webView loadRequest:req];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    
+    return YES;
 }
 
 @end

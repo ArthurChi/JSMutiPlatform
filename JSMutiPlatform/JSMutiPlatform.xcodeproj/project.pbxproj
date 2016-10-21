@@ -15,6 +15,8 @@
 		2A1C840E1DB9AEC7000BA886 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2A1C840C1DB9AEC7000BA886 /* LaunchScreen.storyboard */; };
 		2A1C84191DB9AEC8000BA886 /* JSMutiPlatformTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A1C84181DB9AEC8000BA886 /* JSMutiPlatformTests.m */; };
 		2A1C84241DB9AEC8000BA886 /* JSMutiPlatformUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A1C84231DB9AEC8000BA886 /* JSMutiPlatformUITests.m */; };
+		2A1C84361DB9B029000BA886 /* WebViewProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A1C84351DB9B029000BA886 /* WebViewProxy.m */; };
+		2A1C84381DB9BD8B000BA886 /* ExampleApp.html in Resources */ = {isa = PBXBuildFile; fileRef = 2A1C84371DB9BD8B000BA886 /* ExampleApp.html */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +53,9 @@
 		2A1C841F1DB9AEC8000BA886 /* JSMutiPlatformUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JSMutiPlatformUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A1C84231DB9AEC8000BA886 /* JSMutiPlatformUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JSMutiPlatformUITests.m; sourceTree = "<group>"; };
 		2A1C84251DB9AEC8000BA886 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2A1C84341DB9B029000BA886 /* WebViewProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewProxy.h; sourceTree = "<group>"; };
+		2A1C84351DB9B029000BA886 /* WebViewProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewProxy.m; sourceTree = "<group>"; };
+		2A1C84371DB9BD8B000BA886 /* ExampleApp.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = ExampleApp.html; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +106,7 @@
 		2A1C83FD1DB9AEC7000BA886 /* JSMutiPlatform */ = {
 			isa = PBXGroup;
 			children = (
+				2A1C84371DB9BD8B000BA886 /* ExampleApp.html */,
 				2A1C84011DB9AEC7000BA886 /* AppDelegate.h */,
 				2A1C84021DB9AEC7000BA886 /* AppDelegate.m */,
 				2A1C84041DB9AEC7000BA886 /* ViewController.h */,
@@ -110,6 +116,8 @@
 				2A1C840C1DB9AEC7000BA886 /* LaunchScreen.storyboard */,
 				2A1C840F1DB9AEC7000BA886 /* Info.plist */,
 				2A1C83FE1DB9AEC7000BA886 /* Supporting Files */,
+				2A1C84341DB9B029000BA886 /* WebViewProxy.h */,
+				2A1C84351DB9B029000BA886 /* WebViewProxy.m */,
 			);
 			path = JSMutiPlatform;
 			sourceTree = "<group>";
@@ -246,6 +254,7 @@
 				2A1C840E1DB9AEC7000BA886 /* LaunchScreen.storyboard in Resources */,
 				2A1C840B1DB9AEC7000BA886 /* Assets.xcassets in Resources */,
 				2A1C84091DB9AEC7000BA886 /* Main.storyboard in Resources */,
+				2A1C84381DB9BD8B000BA886 /* ExampleApp.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,6 +279,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2A1C84361DB9B029000BA886 /* WebViewProxy.m in Sources */,
 				2A1C84061DB9AEC7000BA886 /* ViewController.m in Sources */,
 				2A1C84031DB9AEC7000BA886 /* AppDelegate.m in Sources */,
 				2A1C84001DB9AEC7000BA886 /* main.m in Sources */,
@@ -496,6 +506,7 @@
 				2A1C842A1DB9AEC8000BA886 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2A1C842B1DB9AEC8000BA886 /* Build configuration list for PBXNativeTarget "JSMutiPlatformTests" */ = {
 			isa = XCConfigurationList;
@@ -504,6 +515,7 @@
 				2A1C842D1DB9AEC8000BA886 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2A1C842E1DB9AEC8000BA886 /* Build configuration list for PBXNativeTarget "JSMutiPlatformUITests" */ = {
 			isa = XCConfigurationList;
@@ -512,6 +524,7 @@
 				2A1C84301DB9AEC8000BA886 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
