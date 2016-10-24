@@ -8,6 +8,7 @@
 
 #import "WebViewProxy.h"
 #import <objc/runtime.h>
+#import "NSURL+JSBridge.h"
 
 @interface WebViewProxy() <UIWebViewDelegate>
 
@@ -54,6 +55,13 @@
     NSLog(@"%@", request.URL.absoluteString);
     
     if (_webView == webView) {
+        
+        if ([request.URL isBridgeLoaded]) {
+            NSString* path = [[NSBundle mainBundle] pathForResource:@"injectJs" ofType:@"js"];
+            NSString* strjs = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+            [webView stringByEvaluatingJavaScriptFromString:strjs];
+        }
+        
         SEL webViewShouldLoadReqSel = @selector(webView:shouldStartLoadWithRequest:navigationType:);
         
         if ([_target respondsToSelector:webViewShouldLoadReqSel]) {

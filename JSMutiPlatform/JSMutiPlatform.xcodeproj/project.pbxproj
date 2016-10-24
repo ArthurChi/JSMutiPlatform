@@ -17,6 +17,8 @@
 		2A1C84241DB9AEC8000BA886 /* JSMutiPlatformUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A1C84231DB9AEC8000BA886 /* JSMutiPlatformUITests.m */; };
 		2A1C84361DB9B029000BA886 /* WebViewProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A1C84351DB9B029000BA886 /* WebViewProxy.m */; };
 		2A1C84381DB9BD8B000BA886 /* ExampleApp.html in Resources */ = {isa = PBXBuildFile; fileRef = 2A1C84371DB9BD8B000BA886 /* ExampleApp.html */; };
+		2AE281171DBDD6B20028CCE0 /* injectJs.js in Resources */ = {isa = PBXBuildFile; fileRef = 2AE281161DBDD6B20028CCE0 /* injectJs.js */; };
+		2AE2811A1DBDDA9C0028CCE0 /* NSURL+JSBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE281191DBDDA9C0028CCE0 /* NSURL+JSBridge.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +58,9 @@
 		2A1C84341DB9B029000BA886 /* WebViewProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewProxy.h; sourceTree = "<group>"; };
 		2A1C84351DB9B029000BA886 /* WebViewProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewProxy.m; sourceTree = "<group>"; };
 		2A1C84371DB9BD8B000BA886 /* ExampleApp.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = ExampleApp.html; sourceTree = "<group>"; };
+		2AE281161DBDD6B20028CCE0 /* injectJs.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = injectJs.js; sourceTree = "<group>"; };
+		2AE281181DBDDA9C0028CCE0 /* NSURL+JSBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+JSBridge.h"; sourceTree = "<group>"; };
+		2AE281191DBDDA9C0028CCE0 /* NSURL+JSBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+JSBridge.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +111,7 @@
 		2A1C83FD1DB9AEC7000BA886 /* JSMutiPlatform */ = {
 			isa = PBXGroup;
 			children = (
+				2AE281161DBDD6B20028CCE0 /* injectJs.js */,
 				2A1C84371DB9BD8B000BA886 /* ExampleApp.html */,
 				2A1C84011DB9AEC7000BA886 /* AppDelegate.h */,
 				2A1C84021DB9AEC7000BA886 /* AppDelegate.m */,
@@ -118,6 +124,8 @@
 				2A1C83FE1DB9AEC7000BA886 /* Supporting Files */,
 				2A1C84341DB9B029000BA886 /* WebViewProxy.h */,
 				2A1C84351DB9B029000BA886 /* WebViewProxy.m */,
+				2AE281181DBDDA9C0028CCE0 /* NSURL+JSBridge.h */,
+				2AE281191DBDDA9C0028CCE0 /* NSURL+JSBridge.m */,
 			);
 			path = JSMutiPlatform;
 			sourceTree = "<group>";
@@ -254,6 +262,7 @@
 				2A1C840E1DB9AEC7000BA886 /* LaunchScreen.storyboard in Resources */,
 				2A1C840B1DB9AEC7000BA886 /* Assets.xcassets in Resources */,
 				2A1C84091DB9AEC7000BA886 /* Main.storyboard in Resources */,
+				2AE281171DBDD6B20028CCE0 /* injectJs.js in Resources */,
 				2A1C84381DB9BD8B000BA886 /* ExampleApp.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -282,6 +291,7 @@
 				2A1C84361DB9B029000BA886 /* WebViewProxy.m in Sources */,
 				2A1C84061DB9AEC7000BA886 /* ViewController.m in Sources */,
 				2A1C84031DB9AEC7000BA886 /* AppDelegate.m in Sources */,
+				2AE2811A1DBDDA9C0028CCE0 /* NSURL+JSBridge.m in Sources */,
 				2A1C84001DB9AEC7000BA886 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
