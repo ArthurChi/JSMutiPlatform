@@ -68,6 +68,64 @@
     invocation.selector = selector;
 }
 
+#pragma mark - private API
+
+- (void)injectJS {
+    
+    [_webView stringByEvaluatingJavaScriptFromString:[self pageLoadedJS]];
+}
+
+- (NSString*)fetchQueueJS {
+    return [NSString stringWithFormat:@"%@._fetchQueue()", _alias];
+}
+
+- (NSString*)pageLoadedJS {
+    
+    NSString* path = [[NSBundle mainBundle] pathForResource:@"injectJs" ofType:@"js"];
+    NSString* strjs = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+    
+    NSMutableString* pageLoadedJS = [NSMutableString string];
+    [pageLoadedJS appendString:@"(function() {"];
+    [pageLoadedJS appendFormat:@"if (window.%@) { return; }", _alias];
+    [pageLoadedJS appendString:strjs];
+    
+    NSMutableDictionary* bridgeObj = [NSMutableDictionary dictionary];
+    bridgeObj[@"registerHandler"] = @"registerHandler";
+    bridgeObj[@"callHandler"] = @"callHandler";
+    bridgeObj[@"disableJavscriptAlertBoxSafetyTimeout"] = @"disableJavscriptAlertBoxSafetyTimeout";
+    bridgeObj[@"_fetchQueue"] = @"_fetchQueue";
+    bridgeObj[@"_handleMessageFromObjC"] = @"_handleMessageFromObjC";
+    
+    for (NSString* key in _invocations.allKeys) {
+        
+        [pageLoadedJS appendFormat:@"function %@() { ", key];
+        [pageLoadedJS appendString:@"var funName = functionName(arguments.callee.toString());"];
+        [pageLoadedJS appendString:@"var message = {'callName':funName, 'argus':arguments};"];
+        [pageLoadedJS appendString:@"sendMessageQueue.push(message);"];
+        [pageLoadedJS appendString:@"messagingIframe.src = CUSTOM_PROTOCOL_SCHEME + '://' + QUEUE_HAS_MESSAGE; }"];
+        bridgeObj[key] = key;
+    }
+
+    NSMutableString* bridgeObjJSON = [[NSMutableString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:bridgeObj options:0 error:nil] encoding:NSUTF8StringEncoding];
+    
+    [bridgeObjJSON replaceOccurrencesOfString:@";" withString:@"," options:0 range:NSMakeRange(0, bridgeObjJSON.length)];
+    [bridgeObjJSON replaceOccurrencesOfString:@"\"" withString:@"" options:0 range:NSMakeRange(0, bridgeObjJSON.length)];
+    
+    [pageLoadedJS appendFormat:@"window.%@ =  %@ ;", _alias, bridgeObjJSON];
+    
+    [pageLoadedJS appendString:@"setTimeout(_callWVJBCallbacks, 0);"];
+    [pageLoadedJS appendString:@"function _callWVJBCallbacks() { "];
+    [pageLoadedJS appendString:@"var callbacks = window.WVJBCallbacks;"];
+    [pageLoadedJS appendString:@"delete window.WVJBCallbacks;"];
+    [pageLoadedJS appendString:@"for (var i=0; i<callbacks.length; i++) {"];
+    [pageLoadedJS appendFormat:@"callbacks[i](%@);", _alias];
+    [pageLoadedJS appendString:@"}}"];
+    
+    [pageLoadedJS appendString:@"})();"];
+    
+    return pageLoadedJS;
+}
+
 // UIWebViewDelegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
@@ -77,11 +135,9 @@
     if (_webView == webView) {
         
         if ([request.URL isBridgeLoaded]) {
-            NSString* path = [[NSBundle mainBundle] pathForResource:@"injectJs" ofType:@"js"];
-            NSString* strjs = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-            [webView stringByEvaluatingJavaScriptFromString:strjs];
+            [self injectJS];
         } else if ([request.URL isFetchQueueQueryMsg]) {
-            NSString* messageJSON = [webView stringByEvaluatingJavaScriptFromString:@"WebViewJavascriptBridge._fetchQueue();"];
+            NSString* messageJSON = [webView stringByEvaluatingJavaScriptFromString:[self fetchQueueJS]];
             
             NSArray* json = [NSJSONSerialization JSONObjectWithData:[messageJSON dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:nil];
             

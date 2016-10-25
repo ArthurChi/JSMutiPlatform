@@ -1,21 +1,11 @@
-(function() {
-	if (window.WebViewJavascriptBridge) {
-		return;
-	}
+
+	
 
 	if (!window.onerror) {
 		window.onerror = function(msg, url, line) {
 			console.log("WebViewJavascriptBridge: ERROR:" + msg + "@" + url + ":" + line);
 		}
 	}
-	window.WebViewJavascriptBridge = {
-		registerHandler: registerHandler,
-		callHandler: callHandler,
-		disableJavscriptAlertBoxSafetyTimeout: disableJavscriptAlertBoxSafetyTimeout,
-		_fetchQueue: _fetchQueue,
-		_handleMessageFromObjC: _handleMessageFromObjC,
-        abc: abc
-	};
 
 	var messagingIframe;
 	var sendMessageQueue = [];
@@ -32,14 +22,6 @@
     {
         var result = /^function\s+([\w\$]+)\s*\(/.exec(funcString)
         return  result  ?  result[ 1 ]  :  ''
-    }
- 
-    function abc() {
-        
-        var funName = functionName(arguments.callee.toString())
-        var message = {'callName':funName, 'argus':arguments};
-        sendMessageQueue.push(message);
-        messagingIframe.src = CUSTOM_PROTOCOL_SCHEME + '://' + QUEUE_HAS_MESSAGE;
     }
  
 	function registerHandler(handlerName, handler) {
@@ -120,13 +102,3 @@
 	document.documentElement.appendChild(messagingIframe);
 
 	registerHandler("_disableJavascriptAlertBoxSafetyTimeout", disableJavscriptAlertBoxSafetyTimeout);
-	
-	setTimeout(_callWVJBCallbacks, 0);
-	function _callWVJBCallbacks() {
-		var callbacks = window.WVJBCallbacks;
-		delete window.WVJBCallbacks;
-		for (var i=0; i<callbacks.length; i++) {
-			callbacks[i](WebViewJavascriptBridge);
-		}
-	}
-})();
