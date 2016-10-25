@@ -13,7 +13,6 @@
 @interface UIWebView (JSBridge)
 
 @property (nonatomic, strong, readonly) WebViewBridge* bridge;
-@property (nonatomic, copy, readonly) NSString* alias;
 
 /**
  *  should set webview's delegate before the invocation of this method

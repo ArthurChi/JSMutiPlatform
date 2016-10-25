@@ -15,6 +15,7 @@
 @property(nonatomic, readwrite, weak) UIWebView* webView;
 @property(nonatomic, strong) NSObject<UIWebViewDelegate>* target;
 @property(nonatomic, strong) NSMutableDictionary* invocations;
+@property (nonatomic, copy, readwrite) NSString* alias;
 
 @end
 
@@ -28,13 +29,14 @@
     return _invocations;
 }
 
-- (instancetype) initWith:(UIWebView*)webView {
+- (instancetype) initWith:(UIWebView*)webView alias:(NSString*) alias {
     
     NSAssert(webView.delegate != nil, @"webview's delegate is nil");
     
     _target = webView.delegate;
     webView.delegate = self;
     _webView = webView;
+    _alias = alias;
     
     return self;
 }

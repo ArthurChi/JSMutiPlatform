@@ -11,6 +11,7 @@
 @interface WebViewBridge : NSProxy
 
 @property (nonatomic, readonly, weak) UIWebView* webView;
+@property (nonatomic, copy, readonly) NSString* alias;
 
 /**
  *  webview's delegate must defined before invoke this muthod
@@ -19,7 +20,7 @@
  *
  *  @return webview's proxy
  */
-- (instancetype) initWith:(UIWebView*)webView;
+- (instancetype) initWith:(UIWebView*)webView alias:(NSString*) alias;
 
 - (void)registMethod:(SEL)selector asJSName:(NSString*)jsName forTarget:(NSObject*)target;
 
