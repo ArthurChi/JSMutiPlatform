@@ -9,24 +9,34 @@
 #import "WebViewBridge.h"
 #import <objc/runtime.h>
 #import "NSURL+JSBridge.h"
+#import "NSMutableString+Kit.h"
 
 @interface WebViewBridge() <UIWebViewDelegate>
 
-@property(nonatomic, readwrite, weak) UIWebView* webView;
-@property(nonatomic, strong) NSObject<UIWebViewDelegate>* target;
-@property(nonatomic, strong) NSMutableDictionary* invocations;
+@property (nonatomic, readwrite, weak) UIWebView* webView;
+@property (nonatomic, strong) NSObject<UIWebViewDelegate>* target;
+@property (nonatomic, strong) NSMutableDictionary* invocations;
 @property (nonatomic, copy, readwrite) NSString* alias;
+@property (nonatomic, strong) NSMutableDictionary* handlers;
 
 @end
 
 @implementation WebViewBridge
 
 - (NSMutableDictionary *)invocations {
-    if (_invocations == nil) {
+    if (!_invocations) {
         _invocations = [NSMutableDictionary dictionary];
     }
     
     return _invocations;
+}
+
+- (NSMutableDictionary*)handlers {
+    if (!_handlers) {
+        _handlers = [NSMutableDictionary dictionary];
+    }
+    
+    return _handlers;
 }
 
 - (instancetype) initWith:(UIWebView*)webView alias:(NSString*) alias {
@@ -66,6 +76,10 @@
     self.invocations[jsName] = invocation;
     invocation.target = target;
     invocation.selector = selector;
+}
+
+- (void)registHandler:(NSString*)handlerName handler:(WVJBHandler)handler {
+    self.handlers[handlerName] = [handler copy];
 }
 
 #pragma mark - private API
@@ -126,6 +140,36 @@
     return pageLoadedJS;
 }
 
+- (NSDictionary*)deserializeMessage:(NSString*)messageJSON {
+    
+    NSArray* msgs = [NSJSONSerialization JSONObjectWithData:[messageJSON dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:nil];
+    return msgs.firstObject;
+}
+
+- (NSString*)serializeMessage:(id)message {
+    
+    NSMutableString* messageJSON = [NSMutableString string];
+    [messageJSON appendString:[[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:message options:0 error:nil] encoding:NSUTF8StringEncoding]];
+    
+    [messageJSON replaceOccurrencesOfString:@"\\" withString:@"\\\\"];
+    [messageJSON replaceOccurrencesOfString:@"\"" withString:@"\\\""];
+    [messageJSON replaceOccurrencesOfString:@"\'" withString:@"\\\'"];
+    [messageJSON replaceOccurrencesOfString:@"\n" withString:@"\\n"];
+    [messageJSON replaceOccurrencesOfString:@"\r" withString:@"\\r"];
+    [messageJSON replaceOccurrencesOfString:@"\f" withString:@"\\f"];
+    [messageJSON replaceOccurrencesOfString:@"\u2028" withString:@"\\u2028"];
+    [messageJSON replaceOccurrencesOfString:@"\u2029" withString:@"\\u2029"];
+    
+    return messageJSON;
+}
+
+- (void)sendMessage:(NSDictionary*)message {
+    
+    NSString* messageInJson = [self serializeMessage:message];
+    NSString* js = [NSString stringWithFormat:@"%@._handleMessageFromObjC('%@');", _alias, messageInJson];
+    [_webView stringByEvaluatingJavaScriptFromString:js];
+}
+
 // UIWebViewDelegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
@@ -139,13 +183,28 @@
         } else if ([request.URL isFetchQueueQueryMsg]) {
             NSString* messageJSON = [webView stringByEvaluatingJavaScriptFromString:[self fetchQueueJS]];
             
-            NSArray* json = [NSJSONSerialization JSONObjectWithData:[messageJSON dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:nil];
+            NSDictionary* msgObj = [self deserializeMessage:messageJSON];
             
-            for (NSDictionary* obj in json) {
-                
-                NSString* key = obj[@"callName"];
+            if (msgObj[@"callName"]) {
+                NSString* key = msgObj[@"callName"];
                 NSInvocation* invocation = _invocations[key];
                 [invocation invoke];
+            } else if (msgObj[@"callbackId"]) {
+                
+                NSString* callbackId = msgObj[@"callbackId"];
+                if (msgObj[@"handlerName"]) {
+                    WVJBHandler handler = self.handlers[msgObj[@"handlerName"]];
+                    
+                    WVJBResponseCallback responseCallback = ^(id responseData) {
+                        NSDictionary* msg = @{@"responseId":callbackId, @"responseData":responseData};
+                        [self sendMessage:msg];
+                    };
+                    
+                    handler(msgObj[@"data"], responseCallback);
+                }
+                
+            } else if (msgObj[@"responseId"]) {
+                
             }
         }
         

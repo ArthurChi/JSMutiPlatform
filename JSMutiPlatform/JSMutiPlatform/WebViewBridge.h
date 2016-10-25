@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void (^WVJBResponseCallback)(id responseData);
+typedef void (^WVJBHandler)(id data, WVJBResponseCallback responseCallback);
+
 @interface WebViewBridge : NSProxy
 
 @property (nonatomic, readonly, weak) UIWebView* webView;
@@ -23,5 +26,6 @@
 - (instancetype) initWith:(UIWebView*)webView alias:(NSString*) alias;
 
 - (void)registMethod:(SEL)selector asJSName:(NSString*)jsName forTarget:(NSObject*)target;
+- (void)registHandler:(NSString*)handlerName handler:(WVJBHandler)handler;
 
 @end

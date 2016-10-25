@@ -24,6 +24,12 @@
     _webView.delegate = self;
     [_webView registBridgeAs:@"WebViewJavascriptBridge"];
     [_webView.bridge registMethod:@selector(abc) asJSName:@"abc" forTarget:self];
+    [_webView.bridge registHandler:@"testObjcCallback" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSLog(@"这里是native回调, 数据是%@", data);
+        
+        NSString* str = [NSString stringWithFormat:@"给你数据%@", data];
+        responseCallback(str);
+    }];
     
     NSString* path = [[NSBundle mainBundle] pathForResource:@"ExampleApp" ofType:@"html"];
     NSURL* url = [NSURL fileURLWithPath:path];

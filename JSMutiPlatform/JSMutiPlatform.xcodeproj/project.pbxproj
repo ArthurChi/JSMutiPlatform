@@ -18,6 +18,7 @@
 		2A1C84361DB9B029000BA886 /* WebViewBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A1C84351DB9B029000BA886 /* WebViewBridge.m */; };
 		2A1C84381DB9BD8B000BA886 /* ExampleApp.html in Resources */ = {isa = PBXBuildFile; fileRef = 2A1C84371DB9BD8B000BA886 /* ExampleApp.html */; };
 		2A3760AF1DBEF191001906A2 /* UIWebView+JSBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A3760AE1DBEF191001906A2 /* UIWebView+JSBridge.m */; };
+		2A3760B21DBF5026001906A2 /* NSMutableString+Kit.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A3760B11DBF5026001906A2 /* NSMutableString+Kit.m */; };
 		2AE281171DBDD6B20028CCE0 /* injectJs.js in Resources */ = {isa = PBXBuildFile; fileRef = 2AE281161DBDD6B20028CCE0 /* injectJs.js */; };
 		2AE2811A1DBDDA9C0028CCE0 /* NSURL+JSBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE281191DBDDA9C0028CCE0 /* NSURL+JSBridge.m */; };
 /* End PBXBuildFile section */
@@ -61,6 +62,8 @@
 		2A1C84371DB9BD8B000BA886 /* ExampleApp.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = ExampleApp.html; sourceTree = "<group>"; };
 		2A3760AD1DBEF191001906A2 /* UIWebView+JSBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+JSBridge.h"; sourceTree = "<group>"; };
 		2A3760AE1DBEF191001906A2 /* UIWebView+JSBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+JSBridge.m"; sourceTree = "<group>"; };
+		2A3760B01DBF5026001906A2 /* NSMutableString+Kit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableString+Kit.h"; sourceTree = "<group>"; };
+		2A3760B11DBF5026001906A2 /* NSMutableString+Kit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+Kit.m"; sourceTree = "<group>"; };
 		2AE281161DBDD6B20028CCE0 /* injectJs.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = injectJs.js; sourceTree = "<group>"; };
 		2AE281181DBDDA9C0028CCE0 /* NSURL+JSBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+JSBridge.h"; sourceTree = "<group>"; };
 		2AE281191DBDDA9C0028CCE0 /* NSURL+JSBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+JSBridge.m"; sourceTree = "<group>"; };
@@ -131,6 +134,8 @@
 				2AE281191DBDDA9C0028CCE0 /* NSURL+JSBridge.m */,
 				2A3760AD1DBEF191001906A2 /* UIWebView+JSBridge.h */,
 				2A3760AE1DBEF191001906A2 /* UIWebView+JSBridge.m */,
+				2A3760B01DBF5026001906A2 /* NSMutableString+Kit.h */,
+				2A3760B11DBF5026001906A2 /* NSMutableString+Kit.m */,
 			);
 			path = JSMutiPlatform;
 			sourceTree = "<group>";
@@ -298,6 +303,7 @@
 				2A1C84031DB9AEC7000BA886 /* AppDelegate.m in Sources */,
 				2AE2811A1DBDDA9C0028CCE0 /* NSURL+JSBridge.m in Sources */,
 				2A1C84001DB9AEC7000BA886 /* main.m in Sources */,
+				2A3760B21DBF5026001906A2 /* NSMutableString+Kit.m in Sources */,
 				2A3760AF1DBEF191001906A2 /* UIWebView+JSBridge.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
