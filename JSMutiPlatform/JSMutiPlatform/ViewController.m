@@ -7,12 +7,12 @@
 //
 
 #import "ViewController.h"
-#import "WebViewProxy.h"
+#import "WebViewBridge.h"
+#import "UIWebView+JSBridge.h"
 
 @interface ViewController () <UIWebViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
-@property (strong, nonnull) WebViewProxy* proxy;
 
 @end
 
@@ -22,12 +22,17 @@
     [super viewDidLoad];
     
     _webView.delegate = self;
-    _proxy = [[WebViewProxy alloc] initWith:_webView];
+    [_webView registBridgeAs:@"WebViewJavascriptBridge"];
+    [_webView.bridge registMethod:@selector(abc) asJSName:@"abc" forTarget:self];
     
     NSString* path = [[NSBundle mainBundle] pathForResource:@"ExampleApp" ofType:@"html"];
     NSURL* url = [NSURL fileURLWithPath:path];
     NSURLRequest* req = [NSURLRequest requestWithURL:url];
     [_webView loadRequest:req];
+}
+
+- (void)abc {
+    NSLog(@"~~~123");
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {

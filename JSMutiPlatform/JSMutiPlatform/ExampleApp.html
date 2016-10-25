@@ -10,6 +10,11 @@
 </head><body>
 	<h1>WebViewJavascriptBridge Demo</h1>
 	<script>
+        
+        function show() {
+            WebViewJavascriptBridge.abc();
+        }
+        
 	window.onerror = function(err) {
 		log('window.onerror: ' + err)
 	}
@@ -57,4 +62,5 @@
 	})
 	</script>
 	<div id='buttons'></div> <div id='log'></div>
+    <input type=button name=smt value='确定' onclick="javascript:show();">
 </body></html>

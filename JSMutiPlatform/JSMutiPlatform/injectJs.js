@@ -13,7 +13,8 @@
 		callHandler: callHandler,
 		disableJavscriptAlertBoxSafetyTimeout: disableJavscriptAlertBoxSafetyTimeout,
 		_fetchQueue: _fetchQueue,
-		_handleMessageFromObjC: _handleMessageFromObjC
+		_handleMessageFromObjC: _handleMessageFromObjC,
+        abc: abc
 	};
 
 	var messagingIframe;
@@ -27,6 +28,20 @@
 	var uniqueId = 1;
 	var dispatchMessagesWithTimeoutSafety = true;
 
+    function functionName(funcString)
+    {
+        var result = /^function\s+([\w\$]+)\s*\(/.exec(funcString)
+        return  result  ?  result[ 1 ]  :  ''
+    }
+ 
+    function abc() {
+        
+        var funName = functionName(arguments.callee.toString())
+        var message = {'callName':funName, 'argus':arguments};
+        sendMessageQueue.push(message);
+        messagingIframe.src = CUSTOM_PROTOCOL_SCHEME + '://' + QUEUE_HAS_MESSAGE;
+    }
+ 
 	function registerHandler(handlerName, handler) {
 		messageHandlers[handlerName] = handler;
 	}

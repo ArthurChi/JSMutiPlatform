@@ -11,5 +11,6 @@
 @interface NSURL (JSBridge)
 
 - (BOOL)isBridgeLoaded;
+- (BOOL)isFetchQueueQueryMsg;
 
 @end

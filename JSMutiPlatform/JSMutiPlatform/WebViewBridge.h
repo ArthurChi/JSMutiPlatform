@@ -1,5 +1,5 @@
 //
-//  WebViewProxy.h
+//  WebViewBridge.h
 //  JSMutiPlatform
 //
 //  Created by cjfire on 16/10/21.
@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WebViewProxy : NSProxy
+@interface WebViewBridge : NSProxy
 
-@property (nonatomic, readonly) UIWebView* webView;
+@property (nonatomic, readonly, weak) UIWebView* webView;
 
 /**
  *  webview's delegate must defined before invoke this muthod
@@ -20,5 +20,7 @@
  *  @return webview's proxy
  */
 - (instancetype) initWith:(UIWebView*)webView;
+
+- (void)registMethod:(SEL)selector asJSName:(NSString*)jsName forTarget:(NSObject*)target;
 
 @end
