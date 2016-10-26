@@ -10,6 +10,7 @@
 #import <objc/runtime.h>
 #import "NSURL+JSBridge.h"
 #import "NSMutableString+Kit.h"
+#import <JavaScriptCore/JavaScriptCore.h>
 
 @interface WebViewBridge() <UIWebViewDelegate>
 
@@ -18,10 +19,13 @@
 @property (nonatomic, strong) NSMutableDictionary* invocations;
 @property (nonatomic, copy, readwrite) NSString* alias;
 @property (nonatomic, strong) NSMutableDictionary* handlers;
+@property (nonatomic, strong) NSMutableDictionary* responseCallbacks;
 
 @end
 
-@implementation WebViewBridge
+@implementation WebViewBridge {
+    long _uniqueId;
+}
 
 - (NSMutableDictionary *)invocations {
     if (!_invocations) {
@@ -37,6 +41,14 @@
     }
     
     return _handlers;
+}
+
+- (NSMutableDictionary *)responseCallbacks {
+    if (!_responseCallbacks) {
+        _responseCallbacks = [NSMutableDictionary dictionary];
+    }
+    
+    return _responseCallbacks;
 }
 
 - (instancetype) initWith:(UIWebView*)webView alias:(NSString*) alias {
@@ -170,6 +182,25 @@
     [_webView stringByEvaluatingJavaScriptFromString:js];
 }
 
+- (void)sendData:(id)data responseCallback:(WVJBResponseCallback)responseCallback handlerName:(NSString*)handlerName {
+    NSMutableDictionary* message = [NSMutableDictionary dictionary];
+    
+    if (data) {
+        message[@"data"] = data;
+    }
+    
+    if (responseCallback) {
+        NSString* callbackId = [NSString stringWithFormat:@"objc_cb_%ld", ++_uniqueId];
+        self.responseCallbacks[callbackId] = [responseCallback copy];
+        message[@"callbackId"] = callbackId;
+    }
+    
+    if (handlerName) {
+        message[@"handlerName"] = handlerName;
+    }
+    [self sendMessage:message];
+}
+
 // UIWebViewDelegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
@@ -196,6 +227,11 @@
                     WVJBHandler handler = self.handlers[msgObj[@"handlerName"]];
                     
                     WVJBResponseCallback responseCallback = ^(id responseData) {
+                        
+                        if (!responseData) {
+                            responseData = [NSNull null];
+                        }
+                        
                         NSDictionary* msg = @{@"responseId":callbackId, @"responseData":responseData};
                         [self sendMessage:msg];
                     };
@@ -204,7 +240,10 @@
                 }
                 
             } else if (msgObj[@"responseId"]) {
-                
+                NSString* responseId = msgObj[@"responseId"];
+                WVJBResponseCallback responseCallback = _responseCallbacks[responseId];
+                responseCallback(msgObj[@"responseData"]);
+                [self.responseCallbacks removeObjectForKey:responseId];
             }
         }
         
